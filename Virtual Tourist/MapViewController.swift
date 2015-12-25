@@ -71,6 +71,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         let annotation = MKPointAnnotation()
         annotation.coordinate = touchMapCoordinate
         mapView.addAnnotation(annotation)
+
+        let photoAlbumViewController = storyboard!.instantiateViewControllerWithIdentifier("PhotoAlbumViewController")
+        presentViewController(photoAlbumViewController, animated: true, completion: nil)
     }
 
     func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
