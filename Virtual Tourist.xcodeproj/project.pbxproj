@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0102BEBE1C2DA26500C62D0C /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0102BEBD1C2DA26500C62D0C /* MapKit.framework */; };
 		01E6C2C21C2D9FE800F5B216 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E6C2C11C2D9FE800F5B216 /* AppDelegate.swift */; };
 		01E6C2C41C2D9FE800F5B216 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E6C2C31C2D9FE800F5B216 /* ViewController.swift */; };
 		01E6C2C71C2D9FE800F5B216 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01E6C2C51C2D9FE800F5B216 /* Main.storyboard */; };
@@ -35,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0102BEBD1C2DA26500C62D0C /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		01E6C2BE1C2D9FE800F5B216 /* Virtual Tourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Virtual Tourist.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		01E6C2C11C2D9FE800F5B216 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		01E6C2C31C2D9FE800F5B216 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -56,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0102BEBE1C2DA26500C62D0C /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,6 +82,7 @@
 		01E6C2B51C2D9FE800F5B216 = {
 			isa = PBXGroup;
 			children = (
+				0102BEBD1C2DA26500C62D0C /* MapKit.framework */,
 				01E6C2C01C2D9FE800F5B216 /* Virtual Tourist */,
 				01E6C2D81C2D9FE800F5B216 /* Virtual TouristTests */,
 				01E6C2E31C2D9FE800F5B216 /* Virtual TouristUITests */,
@@ -197,6 +201,11 @@
 					01E6C2BD1C2D9FE800F5B216 = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = Y4N4MH7C88;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					01E6C2D41C2D9FE800F5B216 = {
 						CreatedOnToolsVersion = 7.2;
