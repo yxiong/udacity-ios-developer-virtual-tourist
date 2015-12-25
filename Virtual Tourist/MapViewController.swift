@@ -74,8 +74,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
 
     func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
-        let photoAlbumViewController = storyboard!.instantiateViewControllerWithIdentifier("PhotoAlbumViewController") as! PhotoAlbumViewController
-        presentViewController(photoAlbumViewController, animated: true, completion: nil)
+        performSegueWithIdentifier("MapToPhotoAlbumSegue", sender: self)
     }
 
     func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
