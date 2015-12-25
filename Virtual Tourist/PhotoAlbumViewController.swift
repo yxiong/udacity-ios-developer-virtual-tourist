@@ -9,4 +9,7 @@
 import UIKit
 
 class PhotoAlbumViewController: UIViewController {
+    @IBAction func backToMap(sender: AnyObject) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
 }

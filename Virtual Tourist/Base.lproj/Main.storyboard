@@ -64,7 +64,11 @@
                                 <rect key="frame" x="0.0" y="20" width="600" height="44"/>
                                 <items>
                                     <navigationItem title="Photo Album" id="VL3-dQ-gub">
-                                        <barButtonItem key="leftBarButtonItem" title="Back to Map" id="co1-Qw-jCh"/>
+                                        <barButtonItem key="leftBarButtonItem" title="Back to Map" id="co1-Qw-jCh">
+                                            <connections>
+                                                <action selector="backToMap:" destination="rua-8x-stZ" id="1Mm-z7-umg"/>
+                                            </connections>
+                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
