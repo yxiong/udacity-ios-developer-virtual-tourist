@@ -16,6 +16,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
+        longPressGestureRecognizer.minimumPressDuration = 1.0
+        mapView.addGestureRecognizer(longPressGestureRecognizer)
         restoreMapRegion(false)
     }
 
@@ -54,11 +57,20 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             let span = MKCoordinateSpan(latitudeDelta: latitudeDelta, longitudeDelta: longitudeDelta)
 
             let savedRegion = MKCoordinateRegion(center: center, span: span)
-
-            print("lat: \(latitude), lon: \(longitude), latD: \(latitudeDelta), lonD: \(longitudeDelta)")
-
             mapView.setRegion(savedRegion, animated: animated)
         }
+    }
+
+    func handleLongPress(gestureRecognizer: UIGestureRecognizer) {
+        if gestureRecognizer.state != UIGestureRecognizerState.Began {
+            return
+        }
+        let touchPoint = gestureRecognizer.locationInView(mapView)
+        let touchMapCoordinate = mapView.convertPoint(touchPoint, toCoordinateFromView: mapView)
+
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = touchMapCoordinate
+        mapView.addAnnotation(annotation)
     }
 
     func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
