@@ -40,10 +40,10 @@
             </objects>
             <point key="canvasLocation" x="477" y="585"/>
         </scene>
-        <!--View Controller-->
+        <!--Photo Album View Controller-->
         <scene sceneID="BNC-7J-ppV">
             <objects>
-                <viewController storyboardIdentifier="PhotoAlbumViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rua-8x-stZ" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PhotoAlbumViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rua-8x-stZ" customClass="PhotoAlbumViewController" customModule="Virtual_Tourist" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="UTT-Mc-ara"/>
                         <viewControllerLayoutGuide type="bottom" id="03q-nl-Qeb"/>

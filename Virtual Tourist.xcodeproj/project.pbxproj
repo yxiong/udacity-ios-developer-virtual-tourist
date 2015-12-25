@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0102BEBE1C2DA26500C62D0C /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0102BEBD1C2DA26500C62D0C /* MapKit.framework */; };
+		0196F4041C2DB456004FEC8A /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0196F4031C2DB456004FEC8A /* PhotoAlbumViewController.swift */; };
 		01E6C2C21C2D9FE800F5B216 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E6C2C11C2D9FE800F5B216 /* AppDelegate.swift */; };
 		01E6C2C41C2D9FE800F5B216 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E6C2C31C2D9FE800F5B216 /* MapViewController.swift */; };
 		01E6C2C71C2D9FE800F5B216 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01E6C2C51C2D9FE800F5B216 /* Main.storyboard */; };
@@ -37,6 +38,7 @@
 
 /* Begin PBXFileReference section */
 		0102BEBD1C2DA26500C62D0C /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		0196F4031C2DB456004FEC8A /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
 		01E6C2BE1C2D9FE800F5B216 /* Virtual Tourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Virtual Tourist.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		01E6C2C11C2D9FE800F5B216 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		01E6C2C31C2D9FE800F5B216 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				01E6C2CD1C2D9FE800F5B216 /* LaunchScreen.storyboard */,
 				01E6C2D01C2D9FE800F5B216 /* Info.plist */,
 				01E6C2C81C2D9FE800F5B216 /* Virtual_Tourist.xcdatamodeld */,
+				0196F4031C2DB456004FEC8A /* PhotoAlbumViewController.swift */,
 			);
 			path = "Virtual Tourist";
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 				01E6C2C41C2D9FE800F5B216 /* MapViewController.swift in Sources */,
 				01E6C2CA1C2D9FE800F5B216 /* Virtual_Tourist.xcdatamodeld in Sources */,
 				01E6C2C21C2D9FE800F5B216 /* AppDelegate.swift in Sources */,
+				0196F4041C2DB456004FEC8A /* PhotoAlbumViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
