@@ -121,13 +121,21 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource {
             /* Pick a random page! */
             let pageLimit = min(totalPages, 40)
             let randomPage = Int(arc4random_uniform(UInt32(pageLimit))) + 1
-            self.getImageFromFlickrBySearchWithPage(methodArguments, pageNumber: randomPage)
+            self.getImageFromFlickrBySearchWithPage(methodArguments, pageNumber: randomPage) {(imageURLs) -> Void in
+                let randomURLIndex = Int(arc4random_uniform(UInt32(imageURLs.count)))
+                let imageURL = imageURLs[randomURLIndex]
+                if let imageData = NSData(contentsOfURL: imageURL) {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.testImageView.image = UIImage(data: imageData)
+                    })
+                }
+            }
         }
 
         task.resume()
     }
 
-    func getImageFromFlickrBySearchWithPage(methodArguments: [String : AnyObject], pageNumber: Int) {
+    func getImageFromFlickrBySearchWithPage(methodArguments: [String : AnyObject], pageNumber: Int, completion:  (([NSURL]) -> Void)?) {
         /* Add the page to the method's arguments */
         var withPageDictionary = methodArguments
         withPageDictionary["page"] = pageNumber
@@ -185,37 +193,21 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource {
                 return
             }
 
-            /* GUARD: Is the "total" key in photosDictionary? */
-            guard let totalPhotosVal = (photosDictionary["total"] as? NSString)?.integerValue else {
-                print("Cannot find key 'total' in \(photosDictionary)")
-                return
-            }
-
-            guard totalPhotosVal > 0 else {
-                print("Zero images in this page")
-                return
-            }
-
             /* GUARD: Is the "photo" key in photosDictionary? */
             guard let photosArray = photosDictionary["photo"] as? [[String: AnyObject]] else {
                 print("Cannot find key 'photo' in \(photosDictionary)")
                 return
             }
 
-            let randomPhotoIndex = Int(arc4random_uniform(UInt32(photosArray.count)))
-            let photoDictionary = photosArray[randomPhotoIndex] as [String: AnyObject]
-
-            /* GUARD: Does our photo have a key for 'url_m'? */
-            guard let imageUrlString = photoDictionary["url_m"] as? String else {
-                print("Cannot find key 'url_m' in \(photoDictionary)")
-                return
+            var imageURLs = [NSURL]()
+            for photoDictionary in photosArray {
+                if let imageUrlString = photoDictionary["url_m"] as? String {
+                    imageURLs.append(NSURL(string: imageUrlString)!)
+                }
             }
 
-            let imageURL = NSURL(string: imageUrlString)
-            if let imageData = NSData(contentsOfURL: imageURL!) {
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.testImageView.image = UIImage(data: imageData)
-                })
+            if let completion = completion {
+                completion(imageURLs)
             }
         }
 
