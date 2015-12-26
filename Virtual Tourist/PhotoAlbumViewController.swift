@@ -12,17 +12,19 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
     @IBOutlet weak var testImageView: UIImageView!
+    var flickrPhotoDownloader: FlickrPhotoDownloader?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        collectionView.dataSource = self
 
         let space: CGFloat = 3.0
         let dimension = (view.frame.size.width - (2 * space)) / 3.0
         collectionViewFlowLayout.minimumInteritemSpacing = space
         collectionViewFlowLayout.minimumLineSpacing = space
         collectionViewFlowLayout.itemSize = CGSizeMake(dimension, dimension)
+        collectionView.dataSource = self
+
+        flickrPhotoDownloader = FlickrPhotoDownloader()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -40,48 +42,34 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource {
         return cell
     }
 
-    let BASE_URL = "https://api.flickr.com/services/rest/"
-    let METHOD_NAME = "flickr.photos.search"
-    let API_KEY = "7b9c18a5e8b82db70e30edab7face42b"
-    let EXTRAS = "url_m"
-    let SAFE_SEARCH = "1"
-    let DATA_FORMAT = "json"
-    let NO_JSON_CALLBACK = "1"
-    let BOUNDING_BOX_HALF_WIDTH = 1.0
-    let BOUNDING_BOX_HALF_HEIGHT = 1.0
-    let LAT_MIN = -90.0
-    let LAT_MAX = 90.0
-    let LON_MIN = -180.0
-    let LON_MAX = 180.0
-
     func searchPhotosByLatLonButtonTouchUp() {
         let lat = 30.0
         let long = 60.0
         let methodArguments = [
-            "method": METHOD_NAME,
-            "api_key": API_KEY,
+            "method": flickrPhotoDownloader!.METHOD_NAME,
+            "api_key": flickrPhotoDownloader!.API_KEY,
             "bbox": createBoundingBoxString(lat, longitude: long),
-            "safe_search": SAFE_SEARCH,
-            "extras": EXTRAS,
-            "format": DATA_FORMAT,
-            "nojsoncallback": NO_JSON_CALLBACK
+            "safe_search": flickrPhotoDownloader!.SAFE_SEARCH,
+            "extras": flickrPhotoDownloader!.EXTRAS,
+            "format": flickrPhotoDownloader!.DATA_FORMAT,
+            "nojsoncallback": flickrPhotoDownloader!.NO_JSON_CALLBACK
         ]
         getImageFromFlickrBySearch(methodArguments)
     }
 
     func createBoundingBoxString(latitude: Double, longitude: Double) -> String {
         /* Fix added to ensure box is bounded by minimum and maximums */
-        let bottom_left_lon = max(longitude - BOUNDING_BOX_HALF_WIDTH, LON_MIN)
-        let bottom_left_lat = max(latitude - BOUNDING_BOX_HALF_HEIGHT, LAT_MIN)
-        let top_right_lon = min(longitude + BOUNDING_BOX_HALF_HEIGHT, LON_MAX)
-        let top_right_lat = min(latitude + BOUNDING_BOX_HALF_HEIGHT, LAT_MAX)
+        let bottom_left_lon = max(longitude - flickrPhotoDownloader!.BOUNDING_BOX_HALF_WIDTH, flickrPhotoDownloader!.LON_MIN)
+        let bottom_left_lat = max(latitude - flickrPhotoDownloader!.BOUNDING_BOX_HALF_HEIGHT, flickrPhotoDownloader!.LAT_MIN)
+        let top_right_lon = min(longitude + flickrPhotoDownloader!.BOUNDING_BOX_HALF_HEIGHT, flickrPhotoDownloader!.LON_MAX)
+        let top_right_lat = min(latitude + flickrPhotoDownloader!.BOUNDING_BOX_HALF_HEIGHT, flickrPhotoDownloader!.LAT_MAX)
         return "\(bottom_left_lon),\(bottom_left_lat),\(top_right_lon),\(top_right_lat)"
     }
 
     func getImageFromFlickrBySearch(methodArguments: [String : AnyObject]) {
 
         let session = NSURLSession.sharedSession()
-        let urlString = BASE_URL + escapedParameters(methodArguments)
+        let urlString = flickrPhotoDownloader!.BASE_URL + escapedParameters(methodArguments)
         let url = NSURL(string: urlString)!
         let request = NSURLRequest(URL: url)
 
@@ -155,7 +143,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource {
         withPageDictionary["page"] = pageNumber
 
         let session = NSURLSession.sharedSession()
-        let urlString = BASE_URL + escapedParameters(withPageDictionary)
+        let urlString = flickrPhotoDownloader!.BASE_URL + escapedParameters(withPageDictionary)
         let url = NSURL(string: urlString)!
         let request = NSURLRequest(URL: url)
 
