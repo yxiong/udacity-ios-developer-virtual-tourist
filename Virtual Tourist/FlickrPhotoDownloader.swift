@@ -23,5 +23,25 @@ class FlickrPhotoDownloader {
     let LON_MIN = -180.0
     let LON_MAX = 180.0
 
-    init() { }
+    func createBoundingBoxString(latitude: Double, longitude: Double) -> String {
+        /* Fix added to ensure box is bounded by minimum and maximums */
+        let bottom_left_lon = max(longitude - BOUNDING_BOX_HALF_WIDTH, LON_MIN)
+        let bottom_left_lat = max(latitude - BOUNDING_BOX_HALF_HEIGHT, LAT_MIN)
+        let top_right_lon = min(longitude + BOUNDING_BOX_HALF_HEIGHT, LON_MAX)
+        let top_right_lat = min(latitude + BOUNDING_BOX_HALF_HEIGHT, LAT_MAX)
+        return "\(bottom_left_lon),\(bottom_left_lat),\(top_right_lon),\(top_right_lat)"
+    }
+
+    func escapedParameters(parameters: [String : AnyObject]) -> String {
+        var urlVars = [String]()
+        for (key, value) in parameters {
+            /* Make sure that it is a string value */
+            let stringValue = "\(value)"
+            /* Escape it */
+            let escapedValue = stringValue.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
+            /* Append it */
+            urlVars += [key + "=" + "\(escapedValue!)"]
+        }
+        return (!urlVars.isEmpty ? "?" : "") + urlVars.joinWithSeparator("&")
+    }
 }
