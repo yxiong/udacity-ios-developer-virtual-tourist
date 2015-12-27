@@ -11,10 +11,9 @@ import UIKit
 class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
-    @IBOutlet weak var testImageView: UIImageView!
     var flickrPhotoDownloader: FlickrPhotoDownloader?
     var images: [UIImage]?
-    let NUM_PHOTOS_IN_COLLECTION = 6
+    let NUM_PHOTOS_IN_COLLECTION = 15
 
     override func viewDidLoad() {
         super.viewDidLoad()

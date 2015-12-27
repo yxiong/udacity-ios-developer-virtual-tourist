@@ -104,18 +104,11 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="a3d-3e-UB3">
                                                     <rect key="frame" x="8" y="8" width="184" height="184"/>
                                                 </imageView>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="TEST TEXT" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="v5y-R5-pA8">
-                                                    <rect key="frame" x="53" y="85" width="95" height="30"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
-                                                </textField>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <constraints>
-                                            <constraint firstItem="v5y-R5-pA8" firstAttribute="centerY" secondItem="e3a-rA-35d" secondAttribute="centerY" id="9xd-zP-LiK"/>
                                             <constraint firstItem="a3d-3e-UB3" firstAttribute="top" secondItem="e3a-rA-35d" secondAttribute="topMargin" id="EPL-qx-Iy4"/>
-                                            <constraint firstItem="v5y-R5-pA8" firstAttribute="centerX" secondItem="e3a-rA-35d" secondAttribute="centerX" id="Uly-fi-nJp"/>
                                             <constraint firstAttribute="bottomMargin" secondItem="a3d-3e-UB3" secondAttribute="bottom" id="aEg-gr-MeL"/>
                                             <constraint firstItem="a3d-3e-UB3" firstAttribute="leading" secondItem="e3a-rA-35d" secondAttribute="leadingMargin" id="jzK-8Q-v50"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="a3d-3e-UB3" secondAttribute="trailing" id="qzq-Nz-CX5"/>
@@ -126,13 +119,6 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qbM-yc-n11">
-                                <rect key="frame" x="180" y="236" width="240" height="128"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="128" id="erj-YV-fTJ"/>
-                                    <constraint firstAttribute="width" constant="240" id="tlF-XK-lny"/>
-                                </constraints>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -145,18 +131,15 @@
                             <constraint firstItem="bf2-tv-Jm0" firstAttribute="top" secondItem="eyp-7P-VYJ" secondAttribute="bottom" id="HeF-RU-Ndr"/>
                             <constraint firstItem="eyp-7P-VYJ" firstAttribute="top" secondItem="UTT-Mc-ara" secondAttribute="bottom" id="K42-l9-DbG"/>
                             <constraint firstItem="03q-nl-Qeb" firstAttribute="top" secondItem="ecj-Q8-wJ9" secondAttribute="bottom" id="NWv-JW-fw3"/>
-                            <constraint firstItem="qbM-yc-n11" firstAttribute="centerY" secondItem="iCa-tQ-utL" secondAttribute="centerY" id="QEL-bG-tbp"/>
                             <constraint firstItem="dS3-TD-VDp" firstAttribute="leading" secondItem="iCa-tQ-utL" secondAttribute="leadingMargin" constant="-20" id="mEX-bQ-vCu"/>
                             <constraint firstItem="ecj-Q8-wJ9" firstAttribute="top" secondItem="dS3-TD-VDp" secondAttribute="bottom" id="otu-1G-vay"/>
                             <constraint firstAttribute="trailingMargin" secondItem="eyp-7P-VYJ" secondAttribute="trailing" constant="-20" id="pXQ-Dd-o7v"/>
                             <constraint firstItem="eyp-7P-VYJ" firstAttribute="leading" secondItem="iCa-tQ-utL" secondAttribute="leadingMargin" constant="-20" id="riY-k0-U2h"/>
-                            <constraint firstItem="qbM-yc-n11" firstAttribute="centerX" secondItem="iCa-tQ-utL" secondAttribute="centerX" id="v8D-GV-vkd"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="dS3-TD-VDp" id="Fdc-ai-mOk"/>
                         <outlet property="collectionViewFlowLayout" destination="o0M-4Y-pwD" id="Nzv-oc-KTg"/>
-                        <outlet property="testImageView" destination="qbM-yc-n11" id="Les-97-dDk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mza-7U-v5g" userLabel="First Responder" sceneMemberID="firstResponder"/>
