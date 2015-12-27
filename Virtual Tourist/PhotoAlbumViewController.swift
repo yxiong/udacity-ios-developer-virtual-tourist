@@ -34,15 +34,16 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource {
         super.viewWillAppear(animated)
         collectionView.reloadData()
         flickrPhotoDownloader!.getImageURLsFromFlickrByByLatLong(30.0, longitude: 60.0) {(imageURLs) -> Void in
-            for var i = 0; i < self.NUM_PHOTOS_IN_COLLECTION; i++ {
-                let imageURL = imageURLs[i]
+            var urlIndex = 0
+            while self.images!.count < self.NUM_PHOTOS_IN_COLLECTION {
+                let imageURL = imageURLs[urlIndex++]
                 if let imageData = NSData(contentsOfURL: imageURL) {
                     self.images!.append(UIImage(data: imageData)!)
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.collectionView.reloadData()
+                    })
                 }
             }
-            dispatch_async(dispatch_get_main_queue(), {
-                self.collectionView.reloadData()
-            })
         }
     }
 
