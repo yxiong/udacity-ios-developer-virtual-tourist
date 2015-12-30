@@ -21,6 +21,10 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         longPressGestureRecognizer.minimumPressDuration = 1.0
         mapView.addGestureRecognizer(longPressGestureRecognizer)
         restoreMapRegion(false)
+
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {}
     }
 
     var filePath : String {
@@ -88,6 +92,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
 
     lazy var fetchedResultsController: NSFetchedResultsController = {
         let fetchRequest = NSFetchRequest(entityName: "Location")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
             managedObjectContext: self.sharedContext,
             sectionNameKeyPath: nil,
