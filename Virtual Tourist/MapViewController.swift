@@ -10,7 +10,7 @@ import CoreData
 import MapKit
 import UIKit
 
-class MapViewController: UIViewController, MKMapViewDelegate {
+class MapViewController: UIViewController, MKMapViewDelegate, NSFetchedResultsControllerDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
 
@@ -25,6 +25,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         do {
             try fetchedResultsController.performFetch()
         } catch {}
+        fetchedResultsController.delegate = self
     }
 
     var filePath : String {
@@ -72,6 +73,14 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         }
         let touchPoint = gestureRecognizer.locationInView(mapView)
         let touchMapCoordinate = mapView.convertPoint(touchPoint, toCoordinateFromView: mapView)
+
+        let dictionary: [String: AnyObject] = [
+            Location.Keys.ID : 0,
+            Location.Keys.Latitude : touchMapCoordinate.latitude,
+            Location.Keys.Longitude : touchMapCoordinate.longitude
+        ]
+        let _ = Location(dictionary: dictionary, context: sharedContext)
+        CoreDataStackManager.sharedInstance().saveContext()
 
         let annotation = MKPointAnnotation()
         annotation.coordinate = touchMapCoordinate

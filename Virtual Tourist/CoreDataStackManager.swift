@@ -59,4 +59,16 @@ class CoreDataStackManager {
         managedObjectContext.persistentStoreCoordinator = coordinator
         return managedObjectContext
     }()
+
+    func saveContext () {
+        if managedObjectContext.hasChanges {
+            do {
+                try managedObjectContext.save()
+            } catch {
+                let nserror = error as NSError
+                NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
+                abort()
+            }
+        }
+    }
 }
