@@ -13,7 +13,7 @@ import UIKit
 class MapViewController: UIViewController, MKMapViewDelegate, NSFetchedResultsControllerDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
-    var selectedCoordinate : CLLocationCoordinate2D?
+    var selectedPinLocation: Location?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,14 +100,23 @@ class MapViewController: UIViewController, MKMapViewDelegate, NSFetchedResultsCo
     }
 
     func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
-        selectedCoordinate = view.annotation?.coordinate
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {}
+        for locationAnyObject in fetchedResultsController.sections![0].objects! {
+            let location = locationAnyObject as! Location
+            if location.latitude.doubleValue == view.annotation?.coordinate.latitude && location.longitude.doubleValue == view.annotation?.coordinate.longitude  {
+                selectedPinLocation = location
+                break
+            }
+        }
         performSegueWithIdentifier("MapToPhotoAlbumSegue", sender: self)
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "MapToPhotoAlbumSegue" {
             let photoAlbumViewController = segue.destinationViewController as! PhotoAlbumViewController
-            photoAlbumViewController.mapCenter = selectedCoordinate
+            photoAlbumViewController.pinLocation = selectedPinLocation
         }
     }
 

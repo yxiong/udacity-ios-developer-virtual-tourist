@@ -14,7 +14,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
 
-    var mapCenter: CLLocationCoordinate2D?
+    var pinLocation: Location?
     var flickrPhotoDownloader: FlickrPhotoDownloader?
     var images: [UIImage]?
     let NUM_PHOTOS_IN_COLLECTION = 15
@@ -23,10 +23,11 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource {
         super.viewDidLoad()
 
         let mapSpan = MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1)
-        let region = MKCoordinateRegion(center: mapCenter!, span: mapSpan)
+        let mapCenter = CLLocationCoordinate2DMake((pinLocation?.latitude.doubleValue)!, (pinLocation?.longitude.doubleValue)!)
+        let region = MKCoordinateRegion(center: mapCenter, span: mapSpan)
         mapView.setRegion(region, animated: true)
         let annotation = MKPointAnnotation()
-        annotation.coordinate = mapCenter!
+        annotation.coordinate = mapCenter
         mapView.addAnnotation(annotation)
 
         let space: CGFloat = 3.0
