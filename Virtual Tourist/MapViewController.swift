@@ -28,6 +28,17 @@ class MapViewController: UIViewController, MKMapViewDelegate, NSFetchedResultsCo
         fetchedResultsController.delegate = self
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
+        for locationAnyObject in fetchedResultsController.sections![0].objects! {
+            let location = locationAnyObject as! Location
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = CLLocationCoordinate2DMake(location.latitude.doubleValue, location.longitude.doubleValue)
+            mapView.addAnnotation(annotation)        
+        }
+    }
+
     var filePath : String {
         let manager = NSFileManager.defaultManager()
         let url = manager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first! as NSURL
