@@ -6,10 +6,11 @@
 //  Copyright © 2015 Ying Xiong. All rights reserved.
 //
 
+import CoreData
 import MapKit
 import UIKit
 
-class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource {
+class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, NSFetchedResultsControllerDelegate {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
@@ -36,6 +37,11 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource {
         collectionViewFlowLayout.minimumLineSpacing = space
         collectionViewFlowLayout.itemSize = CGSizeMake(dimension, dimension)
         collectionView.dataSource = self
+
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {}
+        fetchedResultsController.delegate = self
 
         flickrPhotoDownloader = FlickrPhotoDownloader()
         images = [UIImage]()
@@ -73,4 +79,20 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource {
     @IBAction func backToMap(sender: AnyObject) {
         dismissViewControllerAnimated(true, completion: nil)
     }
+
+    var sharedContext: NSManagedObjectContext {
+        return CoreDataStackManager.sharedInstance().managedObjectContext
+    }
+
+    lazy var fetchedResultsController: NSFetchedResultsController = {
+        let fetchRequest = NSFetchRequest(entityName: "Photo")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
+        fetchRequest.predicate = NSPredicate(format: "location == %@", self.pinLocation!);
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
+            managedObjectContext: self.sharedContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil)
+        return fetchedResultsController
+
+    }()
 }
