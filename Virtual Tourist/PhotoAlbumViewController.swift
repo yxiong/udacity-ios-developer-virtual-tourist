@@ -49,19 +49,35 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, NS
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        collectionView.reloadData()
-        flickrPhotoDownloader!.getImageURLsFromFlickrByByLatLong((pinLocation?.latitude.doubleValue)!, longitude: (pinLocation?.longitude.doubleValue)!) {(imageURLs) -> Void in
-            var urlIndex = 0
-            while self.images!.count < self.NUM_PHOTOS_IN_COLLECTION {
-                let imageURL = imageURLs[urlIndex++]
-                if let imageData = NSData(contentsOfURL: imageURL) {
-                    self.images!.append(UIImage(data: imageData)!)
-                    dispatch_async(dispatch_get_main_queue(), {
-                        self.collectionView.reloadData()
-                    })
+
+        if pinLocation!.photos.isEmpty {
+            flickrPhotoDownloader!.getImageURLsFromFlickrByByLatLong((pinLocation?.latitude.doubleValue)!, longitude: (pinLocation?.longitude.doubleValue)!) {(imageURLs) -> Void in
+
+                for imageURL in imageURLs {
+                    let dictionary: [String: AnyObject] = [
+                        Photo.Keys.ID: 0,
+                        Photo.Keys.ImagePath: "\(imageURL)"
+                    ]
+                    let photo = Photo(dictionary: dictionary, context: self.sharedContext)
+                    photo.location = self.pinLocation!
+                }
+                CoreDataStackManager.sharedInstance().saveContext()
+
+                var urlIndex = 0
+                while self.images!.count < self.NUM_PHOTOS_IN_COLLECTION {
+                    let imageURL = imageURLs[urlIndex++]
+                    if let imageData = NSData(contentsOfURL: imageURL) {
+                        self.images!.append(UIImage(data: imageData)!)
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.collectionView.reloadData()
+                        })
+                    }
                 }
             }
+        } else {
+            print(self.pinLocation!.photos)
         }
+        collectionView.reloadData()
     }
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
