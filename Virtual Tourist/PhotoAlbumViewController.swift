@@ -6,17 +6,28 @@
 //  Copyright © 2015 Ying Xiong. All rights reserved.
 //
 
+import MapKit
 import UIKit
 
 class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource {
+    @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
+
+    var mapCenter: CLLocationCoordinate2D?
     var flickrPhotoDownloader: FlickrPhotoDownloader?
     var images: [UIImage]?
     let NUM_PHOTOS_IN_COLLECTION = 15
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        let mapSpan = MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1)
+        let region = MKCoordinateRegion(center: mapCenter!, span: mapSpan)
+        mapView.setRegion(region, animated: true)
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = mapCenter!
+        mapView.addAnnotation(annotation)
 
         let space: CGFloat = 3.0
         let dimension = (view.frame.size.width - (2 * space)) / 3.0
