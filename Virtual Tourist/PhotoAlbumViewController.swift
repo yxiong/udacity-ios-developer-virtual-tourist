@@ -50,7 +50,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, NS
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         collectionView.reloadData()
-        flickrPhotoDownloader!.getImageURLsFromFlickrByByLatLong(30.0, longitude: 60.0) {(imageURLs) -> Void in
+        flickrPhotoDownloader!.getImageURLsFromFlickrByByLatLong((pinLocation?.latitude.doubleValue)!, longitude: (pinLocation?.longitude.doubleValue)!) {(imageURLs) -> Void in
             var urlIndex = 0
             while self.images!.count < self.NUM_PHOTOS_IN_COLLECTION {
                 let imageURL = imageURLs[urlIndex++]
