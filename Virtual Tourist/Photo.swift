@@ -52,10 +52,14 @@ class Photo : NSManagedObject {
     }
 
     func getImage(completionHandler: () -> Void) {
+        let session = NSURLSession.sharedSession()
         let imageURL = NSURL(string: imagePath!)
-        let imageData = NSData(contentsOfURL: imageURL!)
-        imageData?.writeToFile(imageFilename, atomically: true)
-        completionHandler()
+        let request = NSURLRequest(URL: imageURL!)
+        let task = session.dataTaskWithRequest(request) {data, response, downloadError in
+            data?.writeToFile(self.imageFilename, atomically: true)
+            completionHandler()
+        }
+        task.resume()
     }
 
     func deleteImage() {

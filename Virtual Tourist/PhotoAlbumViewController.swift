@@ -148,7 +148,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
     lazy var fetchedResultsController: NSFetchedResultsController = {
         let fetchRequest = NSFetchRequest(entityName: "Photo")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
-        fetchRequest.predicate = NSPredicate(format: "location == %@", self.pinLocation!);
+        fetchRequest.predicate = NSPredicate(format: "location == %@", self.pinLocation!)
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
             managedObjectContext: self.sharedContext,
             sectionNameKeyPath: nil,
