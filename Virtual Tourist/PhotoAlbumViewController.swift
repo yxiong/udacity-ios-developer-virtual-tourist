@@ -17,7 +17,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
     @IBOutlet weak var bottomButton: UIButton!
 
     var pinLocation: Location?
-    var selectedCells: NSMutableSet?
+    var selectedCellIndices: NSMutableSet?
     var flickrPhotoDownloader: FlickrPhotoDownloader?
     let NUM_PHOTOS_IN_COLLECTION = 15
 
@@ -39,7 +39,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
         collectionViewFlowLayout.itemSize = CGSizeMake(dimension, dimension)
         collectionView.dataSource = self
         collectionView.delegate = self
-        selectedCells = NSMutableSet()
+        selectedCellIndices = NSMutableSet()
 
         do {
             try fetchedResultsController.performFetch()
@@ -109,15 +109,15 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let cell = collectionView.cellForItemAtIndexPath(indexPath) as! PhotoAlbumCollectionViewCell
         cell.imageView.alpha = 0.5
-        selectedCells?.addObject(cell)
+        selectedCellIndices?.addObject(indexPath)
         bottomButton.titleLabel?.text = "Remove"
     }
 
     func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
         let cell = collectionView.cellForItemAtIndexPath(indexPath) as! PhotoAlbumCollectionViewCell
         cell.imageView.alpha = 1.0
-        selectedCells?.removeObject(cell)
-        if selectedCells?.count == 0 {
+        selectedCellIndices?.removeObject(indexPath)
+        if selectedCellIndices?.count == 0 {
             bottomButton.titleLabel?.text = "New Collection"
         }
     }
@@ -143,6 +143,13 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
     }()
 
     @IBAction func bottomButtonPressed(sender: AnyObject) {
-        print("BOTTOM BUTTON PRESSED")
+        for var indexPath in selectedCellIndices! {
+            let photo = pinLocation!.photos[indexPath.row]
+            sharedContext.deleteObject(photo)
+        }
+        CoreDataStackManager.sharedInstance().saveContext()
+        selectedCellIndices!.removeAllObjects()
+
+        collectionView.reloadData()
     }
 }
