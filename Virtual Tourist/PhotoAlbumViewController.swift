@@ -61,6 +61,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, NS
                         photo.location = self.pinLocation!
                     }
                     CoreDataStackManager.sharedInstance().saveContext()
+                    self.collectionView.reloadData()
                 })
             }
         }
@@ -88,7 +89,9 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, NS
             cell.textField.text = "Loading"
             photo.getImage({() -> Void in
                 dispatch_async(dispatch_get_main_queue(), {
-                    collectionView.reloadItemsAtIndexPaths([indexPath])
+                    let c = self.collectionView.cellForItemAtIndexPath(indexPath) as! PhotoAlbumCollectionViewCell
+                    c.textField.hidden = true
+                    c.imageView.image = photo.image
                 })
             })
         } else {
