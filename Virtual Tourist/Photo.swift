@@ -20,7 +20,22 @@ class Photo : NSManagedObject {
     @NSManaged var imagePath: String?
     @NSManaged var location: Location?
 
-    var image: UIImage?
+    var image: UIImage? {
+        get {
+            if let imageData = NSData(contentsOfFile: imageFilename) {
+                return UIImage(data: imageData)
+            } else {
+                return nil
+            }
+        }
+    }
+
+    var imageFilename: String {
+        get {
+            let documentPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+            return documentPath + "/" + (imagePath?.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet()))!
+        }
+    }
 
     override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
         super.init(entity: entity, insertIntoManagedObjectContext: context)
@@ -36,6 +51,10 @@ class Photo : NSManagedObject {
         imagePath = dictionary[Keys.ImagePath] as? String
     }
 
-    func getImage(completion: () -> Void) {
+    func getImage(completionHandler: () -> Void) {
+        let imageURL = NSURL(string: imagePath!)
+        let imageData = NSData(contentsOfURL: imageURL!)
+        imageData?.writeToFile(imageFilename, atomically: true)
+        completionHandler()
     }
 }

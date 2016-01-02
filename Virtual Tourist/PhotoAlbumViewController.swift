@@ -17,7 +17,6 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, NS
 
     var pinLocation: Location?
     var flickrPhotoDownloader: FlickrPhotoDownloader?
-    var images: [UIImage]?
     let NUM_PHOTOS_IN_COLLECTION = 15
 
     override func viewDidLoad() {
@@ -44,7 +43,6 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, NS
         fetchedResultsController.delegate = self
 
         flickrPhotoDownloader = FlickrPhotoDownloader()
-        images = [UIImage]()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -64,17 +62,6 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, NS
                     }
                     CoreDataStackManager.sharedInstance().saveContext()
                 })
-
-                var urlIndex = 0
-                while self.images!.count < self.NUM_PHOTOS_IN_COLLECTION {
-                    let imageURL = imageURLs[urlIndex++]
-                    if let imageData = NSData(contentsOfURL: imageURL) {
-                        self.images!.append(UIImage(data: imageData)!)
-                        dispatch_async(dispatch_get_main_queue(), {
-                            self.collectionView.reloadData()
-                        })
-                    }
-                }
             }
         }
         collectionView.reloadData()
@@ -89,6 +76,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, NS
 
         if indexPath.row >= pinLocation!.photos.count {
             cell.imageView.image = nil
+            cell.textField.hidden = false
             cell.textField.text = "Loading..."
             return cell
         }
@@ -96,21 +84,18 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, NS
         let photo = pinLocation!.photos[indexPath.row]
         if photo.image == nil {
             cell.imageView.image = nil
+            cell.textField.hidden = false
             cell.textField.text = "Loading"
             photo.getImage({() -> Void in
                 dispatch_async(dispatch_get_main_queue(), {
-                    cell.textField.text = ""
-                    cell.imageView.image = photo.image
+                    collectionView.reloadItemsAtIndexPaths([indexPath])
                 })
             })
         } else {
-            cell.textField.text = ""
+            cell.textField.hidden = true
             cell.imageView.image = photo.image
         }
 
-        if (indexPath.row < images!.count) {
-            cell.imageView?.image = images![indexPath.row]
-        }
         return cell
     }
 
