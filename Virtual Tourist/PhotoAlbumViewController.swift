@@ -17,6 +17,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
     @IBOutlet weak var bottomButton: UIButton!
 
     var pinLocation: Location?
+    var selectedCells: NSMutableSet?
     var flickrPhotoDownloader: FlickrPhotoDownloader?
     let NUM_PHOTOS_IN_COLLECTION = 15
 
@@ -38,6 +39,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
         collectionViewFlowLayout.itemSize = CGSizeMake(dimension, dimension)
         collectionView.dataSource = self
         collectionView.delegate = self
+        selectedCells = NSMutableSet()
 
         do {
             try fetchedResultsController.performFetch()
@@ -105,9 +107,19 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
     }
 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! PhotoAlbumCollectionViewCell
+        cell.imageView.alpha = 0.5
+        selectedCells?.addObject(cell)
+        bottomButton.titleLabel?.text = "Remove"
     }
 
     func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
+        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! PhotoAlbumCollectionViewCell
+        cell.imageView.alpha = 1.0
+        selectedCells?.removeObject(cell)
+        if selectedCells?.count == 0 {
+            bottomButton.titleLabel?.text = "New Collection"
+        }
     }
 
     @IBAction func backToMap(sender: AnyObject) {
@@ -129,4 +141,8 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
         return fetchedResultsController
 
     }()
+
+    @IBAction func bottomButtonPressed(sender: AnyObject) {
+        print("BOTTOM BUTTON PRESSED")
+    }
 }

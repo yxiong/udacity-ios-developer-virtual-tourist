@@ -84,6 +84,9 @@
                                     <constraint firstAttribute="height" constant="50" id="F1t-EY-2ji"/>
                                 </constraints>
                                 <state key="normal" title="New Collection"/>
+                                <connections>
+                                    <action selector="bottomButtonPressed:" destination="rua-8x-stZ" eventType="touchUpInside" id="d4j-6t-cm1"/>
+                                </connections>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="dS3-TD-VDp">
                                 <rect key="frame" x="0.0" y="264" width="600" height="286"/>
