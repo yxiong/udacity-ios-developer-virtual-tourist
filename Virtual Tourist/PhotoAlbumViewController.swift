@@ -10,10 +10,11 @@ import CoreData
 import MapKit
 import UIKit
 
-class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, NSFetchedResultsControllerDelegate {
+class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, NSFetchedResultsControllerDelegate {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
+    @IBOutlet weak var bottomButton: UIButton!
 
     var pinLocation: Location?
     var flickrPhotoDownloader: FlickrPhotoDownloader?
@@ -36,6 +37,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, NS
         collectionViewFlowLayout.minimumLineSpacing = space
         collectionViewFlowLayout.itemSize = CGSizeMake(dimension, dimension)
         collectionView.dataSource = self
+        collectionView.delegate = self
 
         do {
             try fetchedResultsController.performFetch()
@@ -100,6 +102,12 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, NS
         }
 
         return cell
+    }
+
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    }
+
+    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
     }
 
     @IBAction func backToMap(sender: AnyObject) {
