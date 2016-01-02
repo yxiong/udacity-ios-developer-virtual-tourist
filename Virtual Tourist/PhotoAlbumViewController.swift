@@ -145,6 +145,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
     @IBAction func bottomButtonPressed(sender: AnyObject) {
         for var indexPath in selectedCellIndices! {
             let photo = pinLocation!.photos[indexPath.row]
+            photo.deleteImage()
             sharedContext.deleteObject(photo)
         }
         CoreDataStackManager.sharedInstance().saveContext()

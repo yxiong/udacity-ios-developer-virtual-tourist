@@ -57,4 +57,9 @@ class Photo : NSManagedObject {
         imageData?.writeToFile(imageFilename, atomically: true)
         completionHandler()
     }
+
+    func deleteImage() {
+        let fileManager = NSFileManager()
+        try! fileManager.removeItemAtPath(imageFilename)
+    }
 }
