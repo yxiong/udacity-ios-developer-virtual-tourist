@@ -32,6 +32,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, NSFetchedResultsCo
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
+        let annotationsToRemove = mapView.annotations.filter { $0 !== mapView.userLocation }
+        mapView.removeAnnotations(annotationsToRemove)
         for locationAnyObject in fetchedResultsController.sections![0].objects! {
             let location = locationAnyObject as! Location
             let annotation = MKPointAnnotation()

@@ -105,7 +105,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
         if photo.image == nil {
             cell.imageView.image = nil
             cell.textField.hidden = false
-            cell.textField.text = "Loading"
+            cell.textField.text = "Loading..."
             photo.getImage({() -> Void in
                 dispatch_async(dispatch_get_main_queue(), {
                     let c = self.collectionView.cellForItemAtIndexPath(indexPath) as! PhotoAlbumCollectionViewCell
