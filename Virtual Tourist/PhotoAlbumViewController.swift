@@ -161,7 +161,6 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
         if bottomButton.titleLabel?.text == "Remove" {
             for indexPath in selectedCellIndices! {
                 let photo = pinLocation!.photos[indexPath.row]
-                photo.deleteImage()
                 sharedContext.deleteObject(photo)
             }
             CoreDataStackManager.sharedInstance().saveContext()
@@ -170,7 +169,6 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
         } else if bottomButton.titleLabel?.text == "New Collection" {
             for var i = pinLocation!.photos.count-1; i >= 0; i-- {
                 let photo = pinLocation!.photos[i]
-                photo.deleteImage()
                 sharedContext.deleteObject(photo)
             }
             CoreDataStackManager.sharedInstance().saveContext()

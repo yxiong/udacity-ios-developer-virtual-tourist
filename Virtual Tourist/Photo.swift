@@ -62,7 +62,7 @@ class Photo : NSManagedObject {
         task.resume()
     }
 
-    func deleteImage() {
+    override func prepareForDeletion() {
         let fileManager = NSFileManager()
         do {
             try fileManager.removeItemAtPath(imageFilename)
