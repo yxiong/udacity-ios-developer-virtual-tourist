@@ -60,6 +60,8 @@ class Photo : NSManagedObject {
 
     func deleteImage() {
         let fileManager = NSFileManager()
-        try! fileManager.removeItemAtPath(imageFilename)
+        do {
+            try fileManager.removeItemAtPath(imageFilename)
+        } catch {}
     }
 }

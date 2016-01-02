@@ -53,23 +53,27 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
         super.viewWillAppear(animated)
 
         if pinLocation!.photos.isEmpty {
-            flickrPhotoDownloader!.getImageURLsFromFlickrByByLatLong((pinLocation?.latitude.doubleValue)!, longitude: (pinLocation?.longitude.doubleValue)!) {(imageURLs) -> Void in
-
-                dispatch_async(dispatch_get_main_queue(), {
-                    for imageURL in imageURLs {
-                        let dictionary: [String: AnyObject] = [
-                            Photo.Keys.ID: 0,
-                            Photo.Keys.ImagePath: "\(imageURL)"
-                        ]
-                        let photo = Photo(dictionary: dictionary, context: self.sharedContext)
-                        photo.location = self.pinLocation!
-                    }
-                    CoreDataStackManager.sharedInstance().saveContext()
-                    self.collectionView.reloadData()
-                })
-            }
+            downloadImageURLs()
         }
         collectionView.reloadData()
+    }
+
+    func downloadImageURLs() {
+        flickrPhotoDownloader!.getImageURLsFromFlickrByByLatLong((pinLocation?.latitude.doubleValue)!, longitude: (pinLocation?.longitude.doubleValue)!) {(imageURLs) -> Void in
+            dispatch_async(dispatch_get_main_queue(), {
+                for imageURL in imageURLs {
+                    let dictionary: [String: AnyObject] = [
+                        Photo.Keys.ID: 0,
+                        Photo.Keys.ImagePath: "\(imageURL)"
+                    ]
+                    let photo = Photo(dictionary: dictionary, context: self.sharedContext)
+                    photo.location = self.pinLocation!
+                }
+                CoreDataStackManager.sharedInstance().saveContext()
+                self.collectionView.reloadData()
+            })
+        }
+
     }
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -143,13 +147,23 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
     }()
 
     @IBAction func bottomButtonPressed(sender: AnyObject) {
-        for var indexPath in selectedCellIndices! {
-            let photo = pinLocation!.photos[indexPath.row]
-            photo.deleteImage()
-            sharedContext.deleteObject(photo)
+        if bottomButton.titleLabel?.text == "Remove" {
+            for indexPath in selectedCellIndices! {
+                let photo = pinLocation!.photos[indexPath.row]
+                photo.deleteImage()
+                sharedContext.deleteObject(photo)
+            }
+            CoreDataStackManager.sharedInstance().saveContext()
+            selectedCellIndices!.removeAllObjects()
+        } else if bottomButton.titleLabel?.text == "New Collection" {
+            for var i = pinLocation!.photos.count-1; i >= 0; i-- {
+                let photo = pinLocation!.photos[i]
+                photo.deleteImage()
+                sharedContext.deleteObject(photo)
+            }
+            CoreDataStackManager.sharedInstance().saveContext()
+            downloadImageURLs()
         }
-        CoreDataStackManager.sharedInstance().saveContext()
-        selectedCellIndices!.removeAllObjects()
 
         collectionView.reloadData()
     }
