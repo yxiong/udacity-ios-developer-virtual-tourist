@@ -104,17 +104,25 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="a3d-3e-UB3">
                                                     <rect key="frame" x="8" y="8" width="184" height="184"/>
                                                 </imageView>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gsb-qZ-FGC">
+                                                    <rect key="frame" x="88" y="85" width="25" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <constraints>
                                             <constraint firstItem="a3d-3e-UB3" firstAttribute="top" secondItem="e3a-rA-35d" secondAttribute="topMargin" id="EPL-qx-Iy4"/>
+                                            <constraint firstItem="gsb-qZ-FGC" firstAttribute="centerY" secondItem="e3a-rA-35d" secondAttribute="centerY" id="SFC-FV-D8T"/>
+                                            <constraint firstItem="gsb-qZ-FGC" firstAttribute="centerX" secondItem="e3a-rA-35d" secondAttribute="centerX" id="TTn-mp-21m"/>
                                             <constraint firstAttribute="bottomMargin" secondItem="a3d-3e-UB3" secondAttribute="bottom" id="aEg-gr-MeL"/>
                                             <constraint firstItem="a3d-3e-UB3" firstAttribute="leading" secondItem="e3a-rA-35d" secondAttribute="leadingMargin" id="jzK-8Q-v50"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="a3d-3e-UB3" secondAttribute="trailing" id="qzq-Nz-CX5"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="imageView" destination="a3d-3e-UB3" id="H6X-Rr-iID"/>
+                                            <outlet property="textField" destination="gsb-qZ-FGC" id="co2-sK-d13"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>

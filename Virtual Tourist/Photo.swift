@@ -7,6 +7,7 @@
 //
 
 import CoreData
+import UIKit
 
 class Photo : NSManagedObject {
 
@@ -18,6 +19,8 @@ class Photo : NSManagedObject {
     @NSManaged var id: NSNumber
     @NSManaged var imagePath: String?
     @NSManaged var location: Location?
+
+    var image: UIImage?
 
     override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
         super.init(entity: entity, insertIntoManagedObjectContext: context)
@@ -31,5 +34,8 @@ class Photo : NSManagedObject {
         // Dictionary
         id = dictionary[Keys.ID] as! Int
         imagePath = dictionary[Keys.ImagePath] as? String
+    }
+
+    func getImage(completion: () -> Void) {
     }
 }

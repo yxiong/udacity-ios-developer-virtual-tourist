@@ -53,15 +53,17 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, NS
         if pinLocation!.photos.isEmpty {
             flickrPhotoDownloader!.getImageURLsFromFlickrByByLatLong((pinLocation?.latitude.doubleValue)!, longitude: (pinLocation?.longitude.doubleValue)!) {(imageURLs) -> Void in
 
-                for imageURL in imageURLs {
-                    let dictionary: [String: AnyObject] = [
-                        Photo.Keys.ID: 0,
-                        Photo.Keys.ImagePath: "\(imageURL)"
-                    ]
-                    let photo = Photo(dictionary: dictionary, context: self.sharedContext)
-                    photo.location = self.pinLocation!
-                }
-                CoreDataStackManager.sharedInstance().saveContext()
+                dispatch_async(dispatch_get_main_queue(), {
+                    for imageURL in imageURLs {
+                        let dictionary: [String: AnyObject] = [
+                            Photo.Keys.ID: 0,
+                            Photo.Keys.ImagePath: "\(imageURL)"
+                        ]
+                        let photo = Photo(dictionary: dictionary, context: self.sharedContext)
+                        photo.location = self.pinLocation!
+                    }
+                    CoreDataStackManager.sharedInstance().saveContext()
+                })
 
                 var urlIndex = 0
                 while self.images!.count < self.NUM_PHOTOS_IN_COLLECTION {
@@ -74,8 +76,6 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, NS
                     }
                 }
             }
-        } else {
-            print(self.pinLocation!.photos)
         }
         collectionView.reloadData()
     }
@@ -86,6 +86,28 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, NS
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("PhotoAlbumCollectionViewCell", forIndexPath: indexPath) as! PhotoAlbumCollectionViewCell
+
+        if indexPath.row >= pinLocation!.photos.count {
+            cell.imageView.image = nil
+            cell.textField.text = "Loading..."
+            return cell
+        }
+
+        let photo = pinLocation!.photos[indexPath.row]
+        if photo.image == nil {
+            cell.imageView.image = nil
+            cell.textField.text = "Loading"
+            photo.getImage({() -> Void in
+                dispatch_async(dispatch_get_main_queue(), {
+                    cell.textField.text = ""
+                    cell.imageView.image = photo.image
+                })
+            })
+        } else {
+            cell.textField.text = ""
+            cell.imageView.image = photo.image
+        }
+
         if (indexPath.row < images!.count) {
             cell.imageView?.image = images![indexPath.row]
         }
