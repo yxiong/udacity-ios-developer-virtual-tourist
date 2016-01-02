@@ -19,7 +19,8 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
     var pinLocation: Location?
     var selectedCellIndices: NSMutableSet?
     var flickrPhotoDownloader: FlickrPhotoDownloader?
-    let NUM_PHOTOS_IN_COLLECTION = 15
+    var numberOfPhotosInCollection: Int = 0
+    let DEFAULT_NUMBER_OF_PHOTOS_IN_COLLECTION = 15
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +46,11 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
             try fetchedResultsController.performFetch()
         } catch {}
         fetchedResultsController.delegate = self
+        if pinLocation?.photos.count == 0 {
+            numberOfPhotosInCollection = DEFAULT_NUMBER_OF_PHOTOS_IN_COLLECTION
+        } else {
+            numberOfPhotosInCollection = (pinLocation?.photos.count)!
+        }
 
         flickrPhotoDownloader = FlickrPhotoDownloader()
     }
@@ -61,6 +67,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
     func downloadImageURLs() {
         flickrPhotoDownloader!.getImageURLsFromFlickrByByLatLong((pinLocation?.latitude.doubleValue)!, longitude: (pinLocation?.longitude.doubleValue)!) {(imageURLs) -> Void in
             dispatch_async(dispatch_get_main_queue(), {
+                var i = 0
                 for imageURL in imageURLs {
                     let dictionary: [String: AnyObject] = [
                         Photo.Keys.ID: 0,
@@ -68,6 +75,10 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
                     ]
                     let photo = Photo(dictionary: dictionary, context: self.sharedContext)
                     photo.location = self.pinLocation!
+                    i++
+                    if i >= self.numberOfPhotosInCollection {
+                        break
+                    }
                 }
                 CoreDataStackManager.sharedInstance().saveContext()
                 self.collectionView.reloadData()
@@ -77,7 +88,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
     }
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return NUM_PHOTOS_IN_COLLECTION
+        return numberOfPhotosInCollection
     }
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -154,6 +165,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
                 sharedContext.deleteObject(photo)
             }
             CoreDataStackManager.sharedInstance().saveContext()
+            numberOfPhotosInCollection -= (selectedCellIndices?.count)!
             selectedCellIndices!.removeAllObjects()
         } else if bottomButton.titleLabel?.text == "New Collection" {
             for var i = pinLocation!.photos.count-1; i >= 0; i-- {
@@ -162,6 +174,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
                 sharedContext.deleteObject(photo)
             }
             CoreDataStackManager.sharedInstance().saveContext()
+            numberOfPhotosInCollection = DEFAULT_NUMBER_OF_PHOTOS_IN_COLLECTION
             downloadImageURLs()
         }
 
