@@ -1,5 +1,5 @@
-On the Map
-==========
+Virtual Tourist
+===============
 
 Udacity iOS Developer Nanodegree project.
 
